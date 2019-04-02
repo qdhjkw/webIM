@@ -59,7 +59,7 @@ export default new Router({
 
 ## 3、函数式跳转到 About 页面
 
-如在 `Index` 页面的 `created()` 生命周期内加入 `this.$router.push('/about')`，那么当 `Index` 页面加载时候就会跳转到 'About' 页面
+如在 `Index` 页面的 `created()` 生命周期内加入 `this.$router.push('/about')`，那么当 `Index` 页面加载时候就会跳转到 `About` 页面
 
 ```
 <script>
