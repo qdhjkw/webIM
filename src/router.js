@@ -7,7 +7,7 @@ export default new Router({
 	mode: 'history',
 	routes: [{
 		path: '/',
-		name: 'index',
-		component: () => import('./views/Index')
+		name: 'im',
+		component: () => import('./views/Im')
 	}]
 })
