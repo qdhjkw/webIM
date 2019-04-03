@@ -136,7 +136,7 @@ export default {
 	border-radius: 10px;
 	overflow: auto;
 	box-sizing: border-box;
-	padding: 5px 7px 5px 10px;
+	padding: 7px 7px 7px 10px;
 	box-shadow: 0 0 28px #bbb;
 
 	.item {
@@ -149,6 +149,8 @@ export default {
 			position: relative;
 			width: 50px;
 			margin-right: -50px;
+			border-color: transparent;
+			transition: border-color ease-out 2s;
 
 			img {
 				width: 30px;
@@ -228,8 +230,20 @@ export default {
 			clear: both;
 		}
 	}
+	.item:hover,
 	.item.clicked {
 		background-color: #fff;
+
+		.left {
+			width: 47px;
+			border-left: 3px solid #DE4313;
+			border-top-left-radius: 3px;
+			border-bottom-left-radius: 3px;
+
+			img {
+				margin-left: 7px;
+			}
+		}
 	}
 	.item:last-child {
 		.right {

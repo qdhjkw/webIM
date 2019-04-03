@@ -11,10 +11,50 @@
 					<img src="../assets/user.png">
 				</div>
 				<div class="content">
-					<div class="name">
-						阿凡达
-					</div>
+					<div class="name">阿凡达</div>
 					<div class="message">你好</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+			<div class="item">
+				<div class="avatar">
+					<img src="../assets/user.png">
+				</div>
+				<div class="content">
+					<div class="name">阿凡达</div>
+					<div class="message image">
+						<img src="../assets/cat.jpg">
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+			<div class="item">
+				<div class="avatar">
+					<img src="../assets/user.png">
+				</div>
+				<div class="content">
+					<div class="name">阿凡达</div>
+					<div class="message video">
+						<div class="play">
+							<v-icon name="play-circle"></v-icon>
+						</div>
+						<video src="../assets/movie.ogg"></video>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+			<div class="item">
+				<div class="avatar">
+					<img src="../assets/user.png">
+				</div>
+				<div class="content">
+					<div class="name">阿凡达</div>
+					<div class="message voice">
+						<v-icon name="volume-up"></v-icon>		
+					</div>
 				</div>
 				<div class="clear"></div>
 			</div>
@@ -24,12 +64,19 @@
 					<img src="../assets/user.png">
 				</div>
 				<div class="content">
-					<div class="name">
-						我
+					<div class="name">阿凡达</div>
+					<div class="message video">
+						<div class="play">
+							<v-icon name="play-circle"></v-icon>
+						</div>
+						<video src="../assets/movie.ogg"></video>
 					</div>
-					<div class="message">你好</div>
 				</div>
 				<div class="clear"></div>
+			</div>
+
+			<div class="warn">
+				<span>阿凡达 不在线</span>
 			</div>
 		</div>
 		<div class="footer">
@@ -95,6 +142,21 @@ export default {
 				content: ' —— ';
 			}
 		}
+		.warn {
+			margin-top: 10px;
+
+			span {
+				display: inline-block;
+				border-radius: 6px;
+				padding: 6px 22px;
+				margin-left: 50%;
+				transform: translateX(-50%);
+				background-color: #ccc;
+				color: #fff;
+				text-align: center;
+				font-size: .7rem;
+			}
+		}
 		.item {
 			margin-top: 10px;
 
@@ -133,6 +195,85 @@ export default {
 					border-bottom-left-radius: 18px;
 					color: #fff;
 					background-color: #FE4332;
+				}
+				.message.image {
+					padding: 0;
+					max-width: 50%;
+					max-height: 50%;
+					overflow: hidden;
+					background-color: #f0f0f0;
+					user-select: none;
+					transition: box-shadow ease-in .2s;
+
+					img {
+						width: 100%;
+						display: block;
+						cursor: pointer;
+					}
+					&:hover {
+						box-shadow: 5px 5px 15px #bbb;
+					}
+				}
+				.message.voice {
+					padding-left: 25px;
+					padding-right: 25px;
+					user-select: none;
+					cursor: pointer;
+
+					.fa-icon {
+						width: auto;
+						height: 20px;
+						max-width: 100%;
+						max-height: 100%;
+					}
+					&:hover {
+						-webkit-filter: brightness(1.5);
+					}
+				}
+				.message.video {
+					padding: 0;
+					min-width: 40px;
+					max-width: 50%;
+					min-height: 40px;
+					max-height: 50%;
+					overflow: hidden;
+					background-color: #f0f0f0;
+					user-select: none;
+					position: relative;
+					
+					.play {
+						position: absolute;
+						width: 100%;
+						height: 100%;
+						background-color: #000;
+						text-align: center;
+						color: #fff;
+						opacity: .5;
+						transition: all ease-in .5s;
+
+						.fa-icon {
+							position: absolute;
+							width: auto;
+							height: 40px;
+							max-width: 100%;
+							max-height: 100%;
+							top: 50%;
+							left: 50%;
+							transform: translate(-50%, -50%);
+						}
+					}
+					video {
+						width: 100%;
+						display: block;
+						cursor: pointer;
+					}
+					&:hover {
+						.play {
+							opacity: 1;
+							background-color: transparent;
+							background-color: rgba(0, 0, 0, .3);
+						}
+					}
 				}
 			}
 		}
