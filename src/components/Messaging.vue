@@ -53,7 +53,7 @@
 				<div class="content">
 					<div class="name">阿凡达</div>
 					<div class="message voice">
-						<v-icon name="volume-up"></v-icon>		
+						<v-icon name="volume-up"></v-icon>
 					</div>
 				</div>
 				<div class="clear"></div>
@@ -82,6 +82,7 @@
 		<div class="footer">
 			<div class="tool">
 				<!-- <img src="../assets/image.png"> -->
+				<img src="../assets/emoji.png">
 				<img src="../assets/file.png">
 				<img src="../assets/video.png">
 				<img src="../assets/voice.png">
@@ -211,7 +212,7 @@ export default {
 						cursor: pointer;
 					}
 					&:hover {
-						box-shadow: 5px 5px 15px #bbb;
+						box-shadow: 5px 5px 15px #ccc;
 					}
 				}
 				.message.voice {
@@ -320,13 +321,16 @@ export default {
 			img {
 				cursor: pointer;
 				display: block;
-				margin: 18px auto 2px;
+				margin: 15px auto 0;
 				width: 28px;
 				height: 28px;
 				transition: all ease-in .7s;
 				&:hover {
 					transform: scale(1.1, 1.1);
 				}
+			}
+			img:last-child {
+				margin-bottom: 15px;
 			}
 		}
 		.input { // 输入框
