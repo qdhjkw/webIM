@@ -6,8 +6,8 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 Vue.use(VueAxios, axios)
 
-import VModal from 'vue-js-modal'
-Vue.use(VModal)
+// import VModal from 'vue-js-modal'
+// Vue.use(VModal)
 
 import 'viewerjs/dist/viewer.css'
 import Viewer from 'v-viewer'

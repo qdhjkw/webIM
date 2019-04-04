@@ -25,16 +25,16 @@
 							<img :src="item.content">
 						</div>
 
-						<div v-if="item.type === 'video'" class="message video">
+						<div v-if="item.type === 'video'" @click="toggleVideoModal(item.content)" class="message video">
 							<div class="play">
 								<v-icon name="play-circle"></v-icon>
 							</div>
-							<video src="../assets/movie.ogg"></video>
+							<video :src="item.content"></video>
 						</div>
 
 						<div v-if="item.type === 'audio'" class="message audio">
 							<v-icon name="volume-up"></v-icon>
-						</div>	
+						</div>
 					</div>
 					<div class="clear"></div>
 				</div>
@@ -44,6 +44,7 @@
 				<span>阿凡达 不在线</span>
 			</div>
 		</div>
+
 		<div class="footer">
 			<div class="tool">
 				<!-- <img src="../assets/image.png"> -->
@@ -60,12 +61,30 @@
 			</button>
 			<div class="clear"></div>
 		</div>
+
+		<transition name="fade">
+			<div @click="toggleVideoModal()" v-if="videoModalConf.isShowVideoModal" class="videoModal">
+				<div @click="$event.stopPropagation()" ref="videoModal" class="preview">
+					<video-player
+						ref="videoPlayer"
+						:playsinline="true"
+						:options="videoModalConf.playerOptions"
+					></video-player>
+				</div>
+			</div>
+		</transition>
 	</div>
 </template>
 
 <script>
+import 'video.js/dist/video-js.css'
+import { videoPlayer } from 'vue-video-player'
+
 export default {
 	name: 'Messaging',
+	components: {
+		videoPlayer
+	},
 	data() {
 		return {
 			/**
@@ -147,10 +166,43 @@ export default {
 				content: require('../assets/phone.mp3'),
 				timestamp: (new Date()).getTime(),
 				timeText: ''
-			}]
+			}],
+			/**
+			 * @name videoModalConf 视频播放配置
+			 * @prop {boolean} isShowVideoModal 是否播放视频
+			 * @prop {object} playerOptions video.js 播放设定 https://github.com/surmon-china/vue-video-player
+			 */
+			videoModalConf: {
+				isShowVideoModal: false,
+				playerOptions: {
+					width: 600,
+					autoplay: true,
+					sources: [{
+						type: "video/mp4",
+						src: "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
+					}]
+				}
+			}
 		}
 	},
 	methods: {
+		/**
+		 * @func toggleVideoModal 播放或关闭视频
+		 * @param {string} videoSrc 视频地址
+		 */
+		toggleVideoModal(videoSrc) {
+			this.videoModalConf.isShowVideoModal = !this.videoModalConf.isShowVideoModal
+			if(videoSrc && this.videoModalConf.isShowVideoModal) {
+				this.$nextTick(() => {
+					let width = this.$refs.videoModal.getBoundingClientRect().width
+					this.videoModalConf.playerOptions.width = width
+					this.videoModalConf.playerOptions.sources = [{
+						type: 'video/mp4',
+						src: videoSrc
+					}]
+				})
+			}
+		},
 		/**
 		 * @func updateMessageTimeText 定时更新时间描述
 		 */
@@ -335,7 +387,7 @@ export default {
 				}
 				.message.image {
 					padding: 0;
-					max-width: 50%;
+					max-width: 40%;
 					max-height: 50%;
 					overflow: hidden;
 					background-color: #f0f0f0;
@@ -512,6 +564,32 @@ export default {
 				font-size: 1.2rem;
 			}
 		}
+	}
+	.videoModal {
+		width: 100%;
+		height: 100%;
+		position: fixed;
+		top: 0;
+		left: 0;
+		background-color: rgba(0, 0, 0, .7);
+		z-index: 10;
+
+		.preview {
+			width: 55%;
+			height: auto;
+			background-color: transparent;
+			border-radius: 4px;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+	}
+	.fade-enter-active, .fade-leave-active {
+		transition: opacity .8s;
+	}
+	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+		opacity: 0;
 	}
 	.clear {
 		clear: both;
