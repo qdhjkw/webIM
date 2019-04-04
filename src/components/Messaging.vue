@@ -52,7 +52,7 @@
 				</div>
 				<div class="content">
 					<div class="name">阿凡达</div>
-					<div class="message voice">
+					<div class="message audio">
 						<v-icon name="volume-up"></v-icon>
 					</div>
 				</div>
@@ -85,7 +85,7 @@
 				<img src="../assets/emoji.png">
 				<img src="../assets/file.png">
 				<img src="../assets/video.png">
-				<img src="../assets/voice.png">
+				<img src="../assets/audio.png">
 			</div>
 			<div class="input">
 				<textarea placeholder="聊些什么吧..."></textarea>
@@ -101,6 +101,47 @@
 <script>
 export default {
 	name: 'Messaging',
+	data() {
+		return {
+			/**
+			 * @name converseWith 聊天对象
+			 * @prop {number} id 用户ID | 群组ID
+			 * @prop {string} type single私聊 | group群聊
+			 * @prop {string} name 用户昵称 | 群组昵称
+			 * @prop {string} avatar 用户头像地址 | 群组头像地址
+			 */
+			converseWith: {
+				id: 2,
+				type: 'single',
+				name: '阿凡达',
+				avatar: require('../assets/user.png')
+			},
+			/**
+			 * @name messages 聊天消息集合
+			 * @prop {object} message 聊天消息
+			 * @prop {object} message.header 消息头
+			 * @prop {number} message.header.sender_id 消息发送方 用户ID | 群组ID
+			 * @prop {number} message.header.receiver_id 消息接收方 用户ID | 群组ID
+			 * @prop {string} message.header.type single私聊 | group群聊
+			 * @prop {object} message.body 消息内容
+			 * @prop {string} message.body.type 消息类型 text文本 | image图片 | video视频 | audio音频
+			 * @prop {string} message.body.content 消息文本或资源地址
+			 * @prop {number} message.body.timestamp 消息发送时间
+			 */
+			messages: [{
+				header: {
+					senderId: 2,
+					receiverId: 1,
+					type: 'single',
+				},
+				body: {
+					type: 'text',
+					content: '你好',
+					timestamp: (new Date()).getTime()
+				}
+			}]
+		}
+	}
 }
 </script>
 
@@ -215,7 +256,7 @@ export default {
 						box-shadow: 5px 5px 15px #ccc;
 					}
 				}
-				.message.voice {
+				.message.audio {
 					padding-left: 25px;
 					padding-right: 25px;
 					user-select: none;
@@ -351,7 +392,8 @@ export default {
 				resize: none;
 				background-color: #f4f4f4;
 				transition: background-color ease-in 3s;
-				&:hover {
+				&:hover,
+				&:focus {
 					background-color: #fff;
 				}
 			}

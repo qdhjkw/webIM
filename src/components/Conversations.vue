@@ -31,39 +31,71 @@
 </template>
 
 <script>
-import { request } from 'http';
+import 'video.js/dist/video-js.css'
+import { videoPlayer } from 'vue-video-player'
+
 export default {
 	name: 'Conversation',
+	components: {
+		videoPlayer
+	},
 	data() {
 		return {
-			conversations: [{ // 会话列表
+			/**
+			 * @name conversations 会话集合
+			 * @prop {object} conversation 会话项
+			 * @prop {string} conversation.withId 用户ID | 群组ID
+			 * @prop {string} conversation.avatar 用户头像地址 | 群组头像地址
+			 * @prop {string} conversation.name 用户昵称 | 群组昵称
+			 * @prop {string} conversation.type single私聊 | group群聊
+			 * @prop {number} conversation.lastestTimestamp 最后一条消息发送时间
+			 * @prop {string} conversation.lastestMessage 文本内容 | 消息类型描述
+			 * @prop {string} conversation.lastestTimeText 最后一条消息的发送时间描述，如1小时前
+			 * @prop {number} conversation.unreadCount 会话未读消息条数
+			 * @prop {boolean} conversation.clicked 会话是否被点击开启状态
+			 */
+			conversations: [{
+				withId: 2,
 				avatar: require('../assets/user.png'),
 				name: '阿凡达',
+				type: 'single',
 				lastestTimestamp: (new Date()).getTime() - 70 * 1000,
 				lastestMessage: '吃饭了吗？',
 				lastestTimeText: '',
 				unreadCount: 10,
 				clicked: false
 			}, {
+				withId: 3,
 				avatar: require('../assets/user.png'),
 				name: '直播姬',
+				type: 'single',
 				lastestTimestamp: (new Date()).getTime() - 70 * 1000,
 				lastestMessage: '谢谢辣条',
 				lastestTimeText: '',
 				unreadCount: 100,
 				clicked: false
 			}],
-			timer: null // 定时器
+			/**
+			 * @name timer 定时器
+			 */
+			timer: null
 		}
 	},
 	methods: {
-		clickConversation(index) { // 点击会话
+		/**
+		 * @func 点击会话项
+		 * @param {number} index 会话项的数组索引
+		 */
+		clickConversation(index) {
 			for(let i=0; i<this.conversations.length; i++) {
 				this.conversations[i].clicked = false
 			}
 			this.conversations[index].clicked = true
 		},
-		updateLastestTimeText() { // 更新时间格式
+		/**
+		 * @func 定时更新时间描述
+		 */
+		updateLastestTimeText() {
             let nowTimestamp = (new Date()).getTime()
 			for(let i=0; i<this.conversations.length; i++) {
 				let item = this.conversations[i]
@@ -108,6 +140,12 @@ export default {
 				this.updateLastestTimeText()
 			}, 60000);
 		},
+		/**
+		 * @private
+		 * @func 在读取到的小于10的月或日数前补0
+		 * @param {number} 月或日数
+		 * @return {(number | string)}
+		 */
 		fillZero(value) { // 月日数值前补0
 			if (value < 10) {
 				return '0' + value
