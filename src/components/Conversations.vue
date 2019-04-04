@@ -83,7 +83,7 @@ export default {
 	},
 	methods: {
 		/**
-		 * @func 点击会话项
+		 * @func clickConversation 点击会话项
 		 * @param {number} index 会话项的数组索引
 		 */
 		clickConversation(index) {
@@ -93,7 +93,7 @@ export default {
 			this.conversations[index].clicked = true
 		},
 		/**
-		 * @func 定时更新时间描述
+		 * @func updateLastestTimeText 定时更新时间描述
 		 */
 		updateLastestTimeText() {
             let nowTimestamp = (new Date()).getTime()
@@ -120,7 +120,7 @@ export default {
 
 				if (monthDiff > 12) { // 超过1年，直接显示年月日
 					let date = new Date(item.lastestTimestamp)
-					item.lastestTimeText =  date.getFullYear() + '年' + this.fillZero(date.getMonth() + 1) + '月' +this. fillZero(date.getDate()) + '日'
+					item.lastestTimeText = date.getFullYear() + '年' + this.fillZero(date.getMonth() + 1) + '月' +this. fillZero(date.getDate()) + '日'
 				} else if (monthDiff >= 1) {
 					item.lastestTimeText = parseInt(monthDiff) + '月前'
 				} else if (weekDiff >= 1) {
@@ -138,11 +138,11 @@ export default {
 
 			this.timer = setTimeout(() => { // 每分钟更新一下时间
 				this.updateLastestTimeText()
-			}, 60000);
+			}, 60000)
 		},
 		/**
 		 * @private
-		 * @func 在读取到的小于10的月或日数前补0
+		 * @func fillZero 在读取到的小于10的月或日数前补0
 		 * @param {number} 月或日数
 		 * @return {(number | string)}
 		 */
@@ -158,7 +158,7 @@ export default {
 	},
 	beforeDestroy() {
 		if(this.timer) { // 销毁时间定时器
-			clearInterval(this.timer)
+			clearTimeout(this.timer)
 		}
 	}
 }

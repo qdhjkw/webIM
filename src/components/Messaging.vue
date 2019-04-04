@@ -3,76 +3,41 @@
 <template>
 	<div id="messaging">
 		<div class="main">
-			<div class="time">
-				<span>3天前</span>
-			</div>
-			<div class="item">
-				<div class="avatar">
-					<img src="../assets/user.png">
+			<div v-for="(item, index) in messages" :key="index">
+				<div v-if="item.timeText !== ''" class="time">
+					<span>{{item.timeText}}</span>
 				</div>
-				<div class="content">
-					<div class="name">阿凡达</div>
-					<div class="message">你好</div>
-				</div>
-				<div class="clear"></div>
-			</div>
 
-			<div class="item">
-				<div class="avatar">
-					<img src="../assets/user.png">
-				</div>
-				<div class="content">
-					<div class="name">阿凡达</div>
-					<div class="message image">
-						<img src="../assets/cat.jpg">
+				<div class="item" :class="{mine: item.senderId !== converseWith.id}">
+					<div class="avatar">
+						<img :src="converseWith.avatar">
 					</div>
-				</div>
-				<div class="clear"></div>
-			</div>
+					<div class="content">
+						<div class="name">{{converseWith.name}}</div>
+						<div v-if="item.type === 'text'" class="message">{{item.content}}</div>
 
-			<div class="item">
-				<div class="avatar">
-					<img src="../assets/user.png">
-				</div>
-				<div class="content">
-					<div class="name">阿凡达</div>
-					<div class="message video">
-						<div class="play">
-							<v-icon name="play-circle"></v-icon>
+						<div v-if="item.type === 'image'" class="message image" v-viewer="{
+							button: false,
+							navbar: false,
+							title: false,
+							toolbar: false
+						}">
+							<img :src="item.content">
 						</div>
-						<video src="../assets/movie.ogg"></video>
-					</div>
-				</div>
-				<div class="clear"></div>
-			</div>
 
-			<div class="item">
-				<div class="avatar">
-					<img src="../assets/user.png">
-				</div>
-				<div class="content">
-					<div class="name">阿凡达</div>
-					<div class="message audio">
-						<v-icon name="volume-up"></v-icon>
-					</div>
-				</div>
-				<div class="clear"></div>
-			</div>
-
-			<div class="item mine">
-				<div class="avatar">
-					<img src="../assets/user.png">
-				</div>
-				<div class="content">
-					<div class="name">阿凡达</div>
-					<div class="message video">
-						<div class="play">
-							<v-icon name="play-circle"></v-icon>
+						<div v-if="item.type === 'video'" class="message video">
+							<div class="play">
+								<v-icon name="play-circle"></v-icon>
+							</div>
+							<video src="../assets/movie.ogg"></video>
 						</div>
-						<video src="../assets/movie.ogg"></video>
+
+						<div v-if="item.type === 'audio'" class="message audio">
+							<v-icon name="volume-up"></v-icon>
+						</div>	
 					</div>
+					<div class="clear"></div>
 				</div>
-				<div class="clear"></div>
 			</div>
 
 			<div class="warn">
@@ -119,27 +84,157 @@ export default {
 			/**
 			 * @name messages 聊天消息集合
 			 * @prop {object} message 聊天消息
-			 * @prop {object} message.header 消息头
-			 * @prop {number} message.header.sender_id 消息发送方 用户ID | 群组ID
-			 * @prop {number} message.header.receiver_id 消息接收方 用户ID | 群组ID
-			 * @prop {string} message.header.type single私聊 | group群聊
-			 * @prop {object} message.body 消息内容
-			 * @prop {string} message.body.type 消息类型 text文本 | image图片 | video视频 | audio音频
-			 * @prop {string} message.body.content 消息文本或资源地址
-			 * @prop {number} message.body.timestamp 消息发送时间
+			 * @prop {number} message.senderId 消息发送方 用户ID | 群组ID
+			 * @prop {number} message.receiverId 消息接收方 用户ID | 群组ID
+			 * @prop {string} message.type 消息类型 text文本 | image图片 | video视频 | audio音频
+			 * @prop {string} message.content 消息文本或资源地址
+			 * @prop {number} message.timestamp 消息发送时间戳
+			 * @prop {boolean} message.isShowTime 是否显示时间
 			 */
 			messages: [{
-				header: {
-					senderId: 2,
-					receiverId: 1,
-					type: 'single',
-				},
-				body: {
-					type: 'text',
-					content: '你好',
-					timestamp: (new Date()).getTime()
-				}
+				senderId: 2,
+				receiverId: 1,
+				type: 'text',
+				content: '你好',
+				timestamp: (new Date()).getTime(),
+				timeText: ''
+			}, {
+				senderId: 1,
+				receiverId: 2,
+				type: 'text',
+				content: 'Hello',
+				timestamp: (new Date()).getTime(),
+				timeText: ''
+			}, {
+				senderId: 2,
+				receiverId: 1,
+				type: 'image',
+				content: require('../assets/cat.jpg'),
+				timestamp: (new Date()).getTime(),
+				timeText: ''
+			}, {
+				senderId: 2,
+				receiverId: 1,
+				type: 'video',
+				content: require('../assets/movie.ogg'),
+				timestamp: (new Date()).getTime(),
+				timeText: ''
+			}, {
+				senderId: 2,
+				receiverId: 1,
+				type: 'audio',
+				content: require('../assets/phone.mp3'),
+				timestamp: (new Date()).getTime(),
+				timeText: ''
+			}, {
+				senderId: 1,
+				receiverId: 2,
+				type: 'image',
+				content: require('../assets/cat.jpg'),
+				timestamp: (new Date()).getTime(),
+				timeText: ''
+			}, {
+				senderId: 1,
+				receiverId: 2,
+				type: 'video',
+				content: require('../assets/movie.ogg'),
+				timestamp: (new Date()).getTime() - 300001,
+				timeText: ''
+			}, {
+				senderId: 1,
+				receiverId: 2,
+				type: 'audio',
+				content: require('../assets/phone.mp3'),
+				timestamp: (new Date()).getTime(),
+				timeText: ''
 			}]
+		}
+	},
+	methods: {
+		/**
+		 * @func updateMessageTimeText 定时更新时间描述
+		 */
+		updateMessageTimeText() {
+			let nowTimestamp = (new Date()).getTime()
+			
+			for(let i=0; i<this.messages.length; i++) {
+				let prev = i;
+				let next = i+1;
+
+				if(prev === 0) {
+					this.messages[prev].timeText = this.transTimestamp(this.messages[prev].timestamp)
+				}
+				if(next < this.messages.length) {
+					let prevTimestamp = parseInt(this.messages[prev].timestamp)
+					let nextTimestamp = parseInt(this.messages[next].timestamp)
+					if((nextTimestamp - prevTimestamp) > 300000) { // 消息间隔超过5分钟
+						this.messages[next].timeText = this.transTimestamp(this.messages[next].timestamp)
+					}
+				}
+			}
+
+			this.timer = setTimeout(() => { // 每分钟更新一下时间
+				this.updateMessageTimeText()
+			}, 60000)
+		},
+		/**
+		 * @private
+		 * @func transTimestamp 转化时间戳为直观时间
+		 * @param {number} timestamp 时间戳
+		 * @return {string}
+		 */
+		transTimestamp(timestamp) {
+			let nowTimestamp = (new Date()).getTime()
+			let timestampDiff = nowTimestamp - timestamp;
+
+			let minute = 1000 * 60;
+			let hour = minute * 60;
+			let day = hour * 24;
+			let halfamonth = day * 15;
+			let month = day * 30;
+
+			let monthDiff = timestampDiff / month;
+			let weekDiff = timestampDiff / (7 * day);
+			let dayDiff = timestampDiff / day;
+			let hourDiff = timestampDiff / hour;
+			let minDiff = timestampDiff / minute;
+
+			if (monthDiff > 12) { // 超过1年，直接显示年月日
+				let date = new Date(item.lastestTimestamp)
+				return date.getFullYear() + '年' + this.fillZero(date.getMonth() + 1) + '月' +this. fillZero(date.getDate()) + '日'
+			} else if (monthDiff >= 1) {
+				return parseInt(monthDiff) + '月前'
+			} else if (weekDiff >= 1) {
+				return parseInt(weekDiff) + '周前'
+			} else if (dayDiff >= 1) {
+				return parseInt(dayDiff) + '天前'
+			} else if (hourDiff >= 1) {
+				return parseInt(hourDiff) + '小时前'
+			} else if (minDiff >= 1) {
+				return parseInt(minDiff) + '分钟前'
+			} else {
+				return '刚刚'
+			}
+		},
+		/**
+		 * @private
+		 * @func fillZero 在读取到的小于10的月或日数前补0
+		 * @param {number} 月或日数
+		 * @return {(number | string)}
+		 */
+		fillZero(value) { // 月日数值前补0
+			if (value < 10) {
+				return '0' + value
+			}
+			return value
+		}
+	},
+	mounted() {
+		this.updateMessageTimeText()
+	},
+	beforeDestroy() {
+		if(this.timer) { //销毁时间定时器
+			clearTimeout(this.timer)
 		}
 	}
 }
@@ -335,7 +430,6 @@ export default {
 					border-top-right-radius: 18px;
 					border-bottom-right-radius: 0;
 					border-bottom-left-radius: 18px;
-					background-color: #FE4332;					
 				}
 			}
 		}

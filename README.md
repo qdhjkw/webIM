@@ -15,6 +15,9 @@ npm run serve
 npm run build
 ```
 
+## 变量或函数声明注释规范
+
+注释规范: http://usejsdoc.org/
 
 ## HTTP 请求
 
